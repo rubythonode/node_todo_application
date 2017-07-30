@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/alertify.min.css">
+  <title>Todo App</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+  <script src="/js/alertify.min.js"></script>
+  <script>
+      $(document).ready(function(){
+        alertify.set('notifier','position', 'top-right');
+        $('#text').focus();
+        $('#remove').click(function() {
+          $.ajax({
+            type: 'DELETE',
+            url: '/todo/'+ $(this).attr('data-id'),
+            dataType: 'json',
+            success: function(response) {
+              if(response.status == 'success') {
+                alertify.success(response.message);
+                setTimeout(function() {
+                  location.href = "/todo";
+                }, 2000)
+              }
+            },
+            error: function(err) {
+              var error = JSON.parse(err.responseText);
+              alertify.error(error.message);
+            }
+          })
+        })
+
+        $('#update').click(function() {
+          $.ajax({
+            type: 'PUT',
+            url: '/todo/'+ $(this).attr('data-id'),
+            dataType: 'json',
+            data: {
+              'text': $('#text').val()
+            },
+            success: function(response) {
+              if(response.status == 'success') {
+                alertify.success(response.message);
+                setTimeout(function() {
+                  location.href = "/todo";
+                }, 1500)
+              }
+            },
+            error: function(err) {
+              var error = JSON.parse(err.responseText);
+              alertify.error(error.message);
+            }
+          })
+
+        })
+
+        $('#completed').click(function() {
+          $.ajax({
+            type: 'PUT',
+            url: '/todo/completed/'+ $(this).attr('data-id'),
+            dataType: 'json',
+            success: function(response) {
+              if(response.status == 'success') {
+                alertify.success(response.message);
+                var text = $('#completed').text();
+                $('#completed').text(text == '완료' ? '취소' : '완료');
+              }
+            },
+            error: function(err) {
+              var error = JSON.parse(err.responseText);
+              alertify.error(error.message);
+            }
+          })
+        })
+      })
+
+  </script>
+</head>
+<body >
+  <div id="showcase" style="background-color: #ffec99;">
+    <div id="whitebox">
+      <div id="title"><%= todo.date %></div>
+      <input id="text" name="text" placeholder="해야하는 일을 적으세요" value="<%= todo.text %>" >1</input>
+      <div id="savewrapper">
+        <% if(!todo.completed) { %>
+          <a id="completed" data-id="<%= todo._id %>">완료</a>
+        <% } else { %>
+          <a id="completed" data-id="<%= todo._id %>">취소</a>
+        <% } %>
+        <a id="remove" data-id="<%= todo._id %>">삭제</a>
+        <a id="update" data-id="<%= todo._id %>">수정</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

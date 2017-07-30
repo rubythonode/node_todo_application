@@ -1,0 +1,227 @@
+@import url('http://fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR';
+  height: 100%;
+}
+
+*, *:after, *:before {
+  box-sizing: inherit;
+}
+
+
+/* container */
+  .container {
+    width: 980px;
+    margin: 0 auto;
+  }
+
+
+    #whitebox {
+      width: 700px;
+      margin: 1rem auto;
+      background-color: white;
+      padding: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+
+
+
+    #whitebox:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+      #whitebox #title {
+        color: #000;
+        font-size: 2rem;
+        padding: 1rem 0;
+        text-align: center;
+      }
+
+      #text {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-weight: 500;
+        font-size: 1.25rem;
+        padding-bottom: 5rem;
+        color: #000;
+      }
+
+      #savewrapper {
+        text-align: right;
+      }
+
+        button {
+          border: none;
+          background: none;
+        }
+        #save {
+          display: inline-block;
+          padding: 0.5rem 1rem;
+          color: #ff8787;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 1rem;
+        }
+
+        #save:hover {
+          background-color: #f8f9fa;
+        }
+
+        #save:active {
+          background-color: #dee2e6;
+        }
+
+        #remove, #update, #completed {
+          display: inline-block;
+          color: #000;
+          padding: 1rem;
+          cursor: pointer;
+          font-weight: bold;
+        }
+
+        #remove {
+          color: #e03131;
+        }
+
+        #remove:hover {
+          color: #fa5252;
+        }
+
+        #update {
+          color: #1b6ec2;
+        }
+
+        #update:hover {
+          color: #329af0
+        }
+
+        #completed:hover {
+          color: #495057;
+        }
+/* showcase */
+
+#showcase {
+  background-color: #343a40;
+  background-size: cover;
+  height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  #intro {
+    text-align: center;
+  }
+  #intro h1 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 10rem;
+  }
+
+  #intro a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    padding: 1rem 3rem;
+    background-color: #ff8787;
+    font-weight: bold;
+  }
+
+  #intro a:hover {
+    background-color: #ffa8a8;
+  }
+
+
+/* sizer */
+
+.sizer {
+  display: inline-block;
+  width: 50%;
+  padding: 0.5rem;
+}
+  .square {
+    padding-top: 15rem;
+    background: white;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  .square:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+
+  .content {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    white-space: pre-wrap;
+    overflow: hidden;
+  }
+
+  .content .text {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+/* sizerwrapper */
+.sizerwrapper {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0px;
+}
+
+  a {
+    color: #000;
+  }
+
+/* more */
+
+#more {
+  width: 300px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#more:hover {
+  opacity: 0.9;
+}
+/* 미디어 쿼리 */
+
+
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 992px) {
+  .container {
+    width: calc(100% - 2rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: calc(100% - 1rem);
+  }
+
+  #whitebox {
+    width: calc(100% - 1rem);
+  }
+
+  .sizer {
+    width: 100%;
+  }
+}
