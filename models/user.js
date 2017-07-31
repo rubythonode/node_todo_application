@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 const jwt = require('jsonwebtoken');
+
 /*
 {
   email: 'webfrontend@naver.com',
@@ -10,8 +11,6 @@ const jwt = require('jsonwebtoken');
   token: '12321312fewfe2nfewowfepwojfpoewfjpwejfpowejpofjpwoe'
 }]
 }
-
-
 */
 
 // 유저 스키마 정보
@@ -86,4 +85,27 @@ userSchema.statics.findByToken = function(token) {
 
 }
 
+
+// mongoose 미들웨어라는 것도 존재한다고 한다. 이것은 참고 코드
+/*
+userSchema.pre('save', function(next) {
+  var user = this;
+
+  if(user.isModified('password')) { // 'password' 가 수정된다면
+    // user.password = hash;
+    // next();
+
+    bcryptjs.genSalt(10, (err, salt) => {
+      bcryptjs.hash(user.password, salt, (err, hash) => {
+        user.password = hash;
+        next();
+      }
+    })
+    }
+  })
+  } else {
+    next();
+  }
+});
+*/
 module.exports = mongoose.model('user', userSchema);

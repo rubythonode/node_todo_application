@@ -4,6 +4,7 @@ const controller = require('./controller');
 const access = require('../../middlewares/access');
 
 router.post('/register', controller.register);
+router.post('/login', controller.login);
 
 // 미들웨어 구축
 router.use(access);
