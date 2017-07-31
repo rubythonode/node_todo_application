@@ -1,4 +1,5 @@
 const User = require('../../models/user');
+const mongoose = require('mongoose')
 const { generateHash, compareHash } = require('../../utils/hash');
 
 /*
@@ -77,7 +78,12 @@ exports.register = (req, res) => {
       return user.save().then(() => {
         return user.generateAuthToken();
       }).then((token) => {
-        res.header('x-auth', token).send(user);
+        return res.header('x-auth', token).status(200).json({
+          status: 'success',
+          message: '회원가입되었어요!',
+          user,
+          token
+        })
       }).catch((err) => {
         console.log(err);
       })
@@ -116,7 +122,7 @@ exports.login = (req, res) => {
         if(result) {
           // 검증 통과 토큰 반환
           return user.generateAuthToken().then((token) => {
-            res.header('x-auth', token).send(user);
+            res.header('x-auth', token).send({user, token});
           })
         } else {
           // 비밀번호 틀렸어!
@@ -137,6 +143,24 @@ exports.login = (req, res) => {
   })
 }
 
+
+exports.logout = (req, res) => {
+  const { id, email } = req.user;
+  let _user = null;
+  // 해당 id의 유효성 검사 실행
+  if(!mongoose.Types.ObjectId.isValid(id)) {
+      res.render('error');
+  }
+  User.findOne({ _id: id }).then((user) => {
+    if(user) {
+      user.tokens = [];
+      user.save().then((err, updateUser) => {
+        res.json(updateUser);
+      })
+    }
+  })
+  res.json(req.user);
+}
 
 exports.me = (req, res) => {
   res.send(req.user);

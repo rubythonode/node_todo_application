@@ -199,6 +199,43 @@ body {
 #more:hover {
   opacity: 0.9;
 }
+
+/* auth */
+
+.auth_box {
+  width: 20rem;
+  background: white;
+  border: 1px solid #fff;
+}
+
+.auth_box_header {
+  background-color: #343a40;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.auth_box_header h2 {
+  margin: 0;
+}
+.auth_box_body {
+  padding: 1rem;
+}
+
+.auth_box_body input {
+  border: none;
+  outline: none;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #343a40;
+  color: #fff;
+}
+
+.auth_box_bottom .loginbtn, .registerbtn {
+  padding: 0.5rem;
+  background-color: #343a40;
+  cursor: pointer;
+}
 /* 미디어 쿼리 */
 
 

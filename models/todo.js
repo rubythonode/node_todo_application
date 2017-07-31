@@ -13,6 +13,9 @@ const todoSchema = new Schema({
   },
   date: {
     type: String
+  },
+  writer: {
+    type: String
   }
 });
 

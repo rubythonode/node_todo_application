@@ -9,13 +9,12 @@
   <title>Todo App</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
   <script src="js/alertify.min.js"></script>
   <script>
       $(document).ready(function(){
         $('#text').focus();
         setInterval(function() {
-          realTime();
+          // realTime();
         }, 1500);
 
         function realTime() {
@@ -50,21 +49,29 @@
         }
         alertify.set('notifier','position', 'top-right');
 
-        $('#todo').submit(function() {
-          $(this).ajaxSubmit({
+        $('#save').click(function(e) {
+          $.ajax({
+            type: 'POST',
+            url: '/todo',
+            headers: {
+              'x-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTdmMWQwMzIxY2U4ZTIwNGNiNTNkNmIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTAxNTAyNzg0fQ.JzaChaRaiRpHMPruFL4pwwUZA7MECWS8j7EiYqj089I'
+            },
+            dataType: 'json',
+            data: {
+              'text': $('#text').val()
+            },
+            success: function(response) {
+              if(response.status == 'success') {
+                alertify.success(response.message);
+                $('.sizerwrapper').prepend('<a href="/todo/'+ response.result._id +'"' + 'data-id='+ response.result._id +'><div class="sizer"><div class="square"><div class="content"><div class="text">'+ response.result.text +'</div></div></div></div></a>')
+                $('#text').val("");
+              }
+            },
             error: function(err) {
               var error = JSON.parse(err.responseText);
               alertify.error(error.message);
-            },
-            success: function(response) {
-              alertify.success(response.message);
-
-
-              $('.sizerwrapper').prepend('<a href="/todo/'+ response.result._id +'"' + 'data-id='+ response.result._id +'><div class="sizer"><div class="square"><div class="content"><div class="text">'+ response.result.text +'</div></div></div></div></a>')
-              $('#text').val("");
             }
-          });
-          return false;
+          })
         });
 
         $('#more').click(function() {
@@ -101,12 +108,10 @@
 <body style="background-color: #ffec99;">
   <div class="container">
     <div id="whitebox">
-      <form action="/todo" id="todo" method="post">
-        <input type="text" id="text" name="text" placeholder="해야하는 일을 적으세요">
-        <div id="savewrapper">
-          <button type="submit" id="save">추가</button>
-        </div>
-      </form>
+      <input type="text" id="text" name="text" placeholder="해야하는 일을 적으세요">
+      <div id="savewrapper">
+        <button id="save">추가</button>
+      </div>
     </div>
 
     <div class="sizerwrapper">

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="/css/alertify.min.css">
+  <title>Todo App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/js/alertify.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var $registerbtn = $('.registerbtn');
+
+      alertify.set('notifier','position', 'top-right');
+
+      $registerbtn.click(function() {
+        var data = {
+          'email': $('.email').val(),
+          'password': $('.password').val()
+        }
+
+        $.ajax({
+          type: 'POST',
+          url: '/user/register',
+          dataType: 'json',
+          data: data,
+          success: function(response) {
+            console.log(response)
+            if(response.status == 'success') {
+              alertify.success(response.message);
+              localStorage.setItem('token', response.token);
+            }
+            setTimeout(() => {
+              location.href = "/todo";
+            }, 2000)
+          },
+          error: function(err) {
+            var error = JSON.parse(err.responseText);
+            console.log(error)
+            alertify.error(error.message);
+          }
+        })
+
+      })
+
+    });
+  </script>
+</head>
+<body>
+  <div id="showcase">
+    <div id="intro">
+      <div class="auth_box">
+        <div class="auth_box_header">
+          <h2>TODO</h2>
+        </div>
+        <div class="auth_box_body">
+          <input type="email" name="email" class="email" placeholder="Please Enter the Email">
+          <input type="password" name="password" class="password" placeholder="Please Enter the password">
+        </div>
+        <div class="auth_box_bottom">
+          <div class="registerbtn">회원가입</div class="registerbtn">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

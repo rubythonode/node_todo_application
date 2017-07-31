@@ -50,10 +50,10 @@ userSchema.methods.generateAuthToken = function() {
   var access = 'auth';
   var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
 
-  user.tokens.push({
+  user.tokens = {
     access,
     token
-  });
+  };
 
   // 프로미스 반환 이슈가 있었던 부분
 

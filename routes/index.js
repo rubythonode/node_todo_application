@@ -6,10 +6,10 @@ const todo = require('./todo');
 
 // user
 const user = require('./user');
-
+router.use('/user', user);
 router.use('/', entry);
 router.use('/todo', todo);
 
-router.use('/user', user);
+
 
 module.exports = router;

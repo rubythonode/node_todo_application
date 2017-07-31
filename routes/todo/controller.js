@@ -49,7 +49,7 @@ exports.todo_list_query = (req, res) => {
 
 exports.todo_create = (req, res) => {
   const { text } = req.body;
-
+  const { id, email } = req.user;
   // 유효성 검사
 
   if(text == '') {
@@ -63,7 +63,8 @@ exports.todo_create = (req, res) => {
   // 모델
   const todo = new Todo({
     text,
-    date: date()
+    date: date(),
+    writer: email
   });
 
 

@@ -19,7 +19,9 @@ module.exports = function(req, res, next) {
     req.token = token;
     next();
   }).catch((e) => {
-    res.status(401).send();
+    res.status(401).json({
+      'message': '접근 권한이 없습니다.'
+    });
   })
 
 }
