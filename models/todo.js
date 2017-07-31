@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
-const todo = new Schema({
+
+// todo list 스키마 정보
+const todoSchema = new Schema({
   text: {
-    type: String,
-    required: true
+    type: String
   },
   completed: {
     type: Boolean,
@@ -15,4 +16,4 @@ const todo = new Schema({
   }
 });
 
-module.exports = mongoose.model('todo', todo);
+module.exports = mongoose.model('todo', todoSchema);

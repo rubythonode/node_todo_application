@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 
 module.exports = function() {
+  // DB 설정 파일
   mongoose.Promise = global.Promise;
   mongoose.connect('mongodb://localhost/todoapp');
 

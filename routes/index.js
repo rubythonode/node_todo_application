@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const basic = require('./basic');
+const entry = require('./entry');
 const todo = require('./todo');
 
-router.use('/', basic);
+// user
+const user = require('./user');
+
+router.use('/', entry);
 router.use('/todo', todo);
 
+router.use('/user', user);
 
 module.exports = router;

@@ -14,6 +14,8 @@ const mongoose = require('mongoose');
     message: '추가되었어요!'
     message: '삭제되었어요!'
 */
+
+// todo_list 를 10개를 가져온다. 역정렬로
 exports.todo_list = (req, res) => {
   Todo.find().limit(10).sort({"_id": -1}).exec((err, todo) => {
     if(err) return res.status(500).send({error: 'database failure'});
@@ -23,6 +25,7 @@ exports.todo_list = (req, res) => {
   })
 }
 
+// id 값에 대한 todo_list 하나를 반환
 exports.todo_list_query = (req, res) => {
     const { id } = req.params;
 
@@ -41,6 +44,8 @@ exports.todo_list_query = (req, res) => {
       }
     })
 }
+
+// todo_list 생성
 
 exports.todo_create = (req, res) => {
   const { text } = req.body;
@@ -74,6 +79,8 @@ exports.todo_create = (req, res) => {
 
 }
 
+
+// todo_list 제거
 exports.todo_remove = (req, res) => {
   const { id } = req.params;
 
@@ -97,6 +104,7 @@ exports.todo_remove = (req, res) => {
   });
 }
 
+// todo_list 수정
 exports.todo_update = (req, res) => {
   const { id } = req.params;
   const { text } = req.body;
@@ -130,6 +138,8 @@ exports.todo_update = (req, res) => {
   });
 }
 
+
+// todo 완료, 취소 로직
 exports.todo_completed = (req, res) => {
   const { id } = req.params;
 
@@ -163,6 +173,7 @@ exports.todo_completed = (req, res) => {
 }
 
 
+// todo_list 더 가져오기 (추가 랜더링)
 exports.todo_more = (req, res) => {
   const { id } = req.params;
 
@@ -187,6 +198,7 @@ exports.todo_more = (req, res) => {
   })
 }
 
+// id 값보다 큰 값을 가져간다. 클라이언트에서 1초마다 실행되는 로직
 exports.todo_real = (req, res) => {
   const { id } = req.params;
 
