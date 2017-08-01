@@ -14,7 +14,7 @@
       $(document).ready(function(){
         $('#text').focus();
         setInterval(function() {
-          // realTime();
+          realTime();
         }, 1500);
 
         function realTime() {
@@ -48,31 +48,15 @@
 
         }
         alertify.set('notifier','position', 'top-right');
-
+        $('#text').keyup(function(e) {
+          if(e.keyCode == 13) {
+            save();
+          }
+        })
         $('#save').click(function(e) {
-          $.ajax({
-            type: 'POST',
-            url: '/todo',
-            headers: {
-              'x-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTdmMWQwMzIxY2U4ZTIwNGNiNTNkNmIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTAxNTAyNzg0fQ.JzaChaRaiRpHMPruFL4pwwUZA7MECWS8j7EiYqj089I'
-            },
-            dataType: 'json',
-            data: {
-              'text': $('#text').val()
-            },
-            success: function(response) {
-              if(response.status == 'success') {
-                alertify.success(response.message);
-                $('.sizerwrapper').prepend('<a href="/todo/'+ response.result._id +'"' + 'data-id='+ response.result._id +'><div class="sizer"><div class="square"><div class="content"><div class="text">'+ response.result.text +'</div></div></div></div></a>')
-                $('#text').val("");
-              }
-            },
-            error: function(err) {
-              var error = JSON.parse(err.responseText);
-              alertify.error(error.message);
-            }
-          })
+          save();
         });
+
 
         $('#more').click(function() {
           var length = $('.sizerwrapper a').length;
@@ -83,6 +67,9 @@
             type: 'GET',
             url: '/todo/more/'+ lastId,
             dataType: 'json',
+            headers: {
+              'x-auth': localStorage.getItem('token')
+            },
             success: function(response) {
               if(response.status == 'success') {
                 alertify.success(response.message);
@@ -101,6 +88,31 @@
             }
           })
         })
+
+        function save() {
+          $.ajax({
+            type: 'POST',
+            url: '/todo',
+            headers: {
+              'x-auth': localStorage.getItem('token')
+            },
+            dataType: 'json',
+            data: {
+              'text': $('#text').val()
+            },
+            success: function(response) {
+              if(response.status == 'success') {
+                alertify.success(response.message);
+                $('.sizerwrapper').prepend('<a href="/todo/'+ response.result._id +'"' + 'data-id='+ response.result._id +'><div class="sizer"><div class="square"><div class="content"><div class="text">'+ response.result.text +'</div></div></div></div></a>')
+                $('#text').val("");
+              }
+            },
+            error: function(err) {
+              var error = JSON.parse(err.responseText);
+              alertify.error(error.message);
+            }
+          })
+        }
       })
 
   </script>

@@ -19,6 +19,9 @@
             type: 'DELETE',
             url: '/todo/'+ $(this).attr('data-id'),
             dataType: 'json',
+            headers: {
+              'x-auth': localStorage.getItem('token')
+            },
             success: function(response) {
               if(response.status == 'success') {
                 alertify.success(response.message);
@@ -42,6 +45,9 @@
             data: {
               'text': $('#text').val()
             },
+            headers: {
+              'x-auth': localStorage.getItem('token')
+            },
             success: function(response) {
               if(response.status == 'success') {
                 alertify.success(response.message);
@@ -63,6 +69,9 @@
             type: 'PUT',
             url: '/todo/completed/'+ $(this).attr('data-id'),
             dataType: 'json',
+            headers: {
+              'x-auth': localStorage.getItem('token')
+            },
             success: function(response) {
               if(response.status == 'success') {
                 alertify.success(response.message);

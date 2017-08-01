@@ -11,11 +11,10 @@
   <script src="/js/alertify.min.js"></script>
   <script>
     $(document).ready(function() {
-      var $registerbtn = $('.registerbtn');
 
       alertify.set('notifier','position', 'top-right');
 
-      $registerbtn.click(function() {
+      $('.registerbtn').click(function() {
         var data = {
           'email': $('.email').val(),
           'password': $('.password').val()
@@ -38,7 +37,6 @@
           },
           error: function(err) {
             var error = JSON.parse(err.responseText);
-            console.log(error)
             alertify.error(error.message);
           }
         })

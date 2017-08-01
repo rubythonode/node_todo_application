@@ -1,6 +1,8 @@
 const Todo = require('../../models/todo');
+const User = require('../../models/user');
 const date = require('../../utils/date');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 /*
   [오류처리]
@@ -8,7 +10,10 @@ const mongoose = require('mongoose');
   status: failure
     error: 0, message: '해야할 일이 비어있습니다.'
     error: 1, message: '존재하지 않은 할일이예요!'
-    error: '2', message: '마지막 데이터예요!'
+    error: 2, message: '마지막 데이터예요!'
+    error: 3, message: '본인이 작성한 글만 삭제 가능합니다.'
+    error: 4, message: '본인이 작성한 글만 수정 가능합니다.'
+    error: 5, message: '본인이 작성한 글만 완료 및 취소가 가능합니다.'
 
   status: success
     message: '추가되었어요!'
@@ -16,7 +21,8 @@ const mongoose = require('mongoose');
 */
 
 // todo_list 를 10개를 가져온다. 역정렬로
-exports.todo_list = (req, res) => {
+exports.todo_list = (req, res, next) => {
+
   Todo.find().limit(10).sort({"_id": -1}).exec((err, todo) => {
     if(err) return res.status(500).send({error: 'database failure'});
     res.render('todo', {
@@ -89,20 +95,30 @@ exports.todo_remove = (req, res) => {
       res.render('error');
   }
 
-  Todo.findByIdAndRemove(id).then((todo) => {
-    if(todo) {
-      return res.status(200).json({
-        status: 'success',
-        message: '삭제되었어요!'
-      });
-    } else {
+  Todo.findById(id).then((todo) => {
+    if(!(req.user.email == todo.writer)) {
       return res.status(404).json({
         status: 'failure',
-        error: '1',
-        message: '존재하지 않은 할일이예요!'
+        error: '3',
+        message: '본인이 작성한 글만 삭제 가능합니다.'
       })
     }
-  });
+
+    Todo.findByIdAndRemove(id).then((todo) => {
+      if(todo) {
+        return res.status(200).json({
+          status: 'success',
+          message: '삭제되었어요!'
+        });
+      } else {
+        return res.status(404).json({
+          status: 'failure',
+          error: '1',
+          message: '존재하지 않은 할일이예요!'
+        })
+      }
+    });
+  })
 }
 
 // todo_list 수정
@@ -122,21 +138,31 @@ exports.todo_update = (req, res) => {
   }
   //
   // res.json(req.body)
-  Todo.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then((todo) => {
-    if(!todo) {
+  Todo.findById(id).then((todo) => {
+    if(!(req.user.email == todo.writer)) {
       return res.status(404).json({
         status: 'failure',
-        error: '1',
-        message: '존재하지 않은 할일이예요!'
+        error: '4',
+        message: '본인이 작성한 글만 수정 가능합니다.'
       })
     }
+    Todo.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then((todo) => {
+      if(!todo) {
+        return res.status(404).json({
+          status: 'failure',
+          error: '1',
+          message: '존재하지 않은 할일이예요!'
+        })
+      }
 
-    return res.status(200).json({
-      status: 'success',
-      message: '수정되었어요!',
-      todo
+      return res.status(200).json({
+        status: 'success',
+        message: '수정되었어요!',
+        todo
+      });
     });
-  });
+  })
+
 }
 
 
@@ -155,6 +181,14 @@ exports.todo_completed = (req, res) => {
         status: 'failure',
         error: '1',
         message: '존재하지 않은 할일이예요!'
+      })
+    }
+
+    if(!(req.user.email == todo.writer)) {
+      return res.status(404).json({
+        status: 'failure',
+        error: '5',
+        message: '본인이 작성한 글만 완료 및 취소가 가능합니다.'
       })
     }
 

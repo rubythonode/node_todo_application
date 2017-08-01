@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 module.exports = function(req, res, next) {
   var token = req.header('x-auth'); // 헤더 정보에 포함된 x-auth 정보를 가지고 온다.
-
+  
   User.findByToken(token).then((user) => {
     if(!user) {
       return Promise.reject();

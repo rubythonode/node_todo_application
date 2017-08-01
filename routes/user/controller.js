@@ -122,7 +122,12 @@ exports.login = (req, res) => {
         if(result) {
           // 검증 통과 토큰 반환
           return user.generateAuthToken().then((token) => {
-            res.header('x-auth', token).send({user, token});
+            return res.header('x-auth', token).status(200).json({
+              status: 'success',
+              message: '로그인 되었어요!',
+              user,
+              token
+            })
           })
         } else {
           // 비밀번호 틀렸어!
